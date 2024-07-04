@@ -9,5 +9,5 @@ jobs:
     with:
       target_day: wednesday
       title: 大事な話
-      discussion_category_slug: meeting-notes
+      discussion_category_slug: general
       description_template_path: .github/workflows/templates/important_discussion.yml
