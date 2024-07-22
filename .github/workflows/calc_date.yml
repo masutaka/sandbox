@@ -7,8 +7,7 @@ jobs:
   get_next_weekly_scheduled_date:
     uses: route06/actions/.github/workflows/get_next_scheduled_date.yml@add-get-next-scheduled-date-workflow
     with:
-      interval: weekly
-      target_day: monday
+      interval: daily
 
   log_result:
     runs-on: ubuntu-latest
