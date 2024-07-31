@@ -8,24 +8,28 @@ jobs:
     uses: route06/actions/.github/workflows/calc_next_date.yml@remove-scheduled
     with:
       interval: daily
+      time_zone: Pacific/Gambier # GMT-9
 
   get_next_weekly_date1:
     uses: route06/actions/.github/workflows/calc_next_date.yml@remove-scheduled
     with:
       interval: weekly
-      target_day: tuesday
+      target_day: monday
+      time_zone: Pacific/Gambier # GMT-9
 
   get_next_weekly_date2:
     uses: route06/actions/.github/workflows/calc_next_date.yml@remove-scheduled
     with:
       interval: weekly
-      target_day: wednesday
+      target_day: tuesday
+      time_zone: Pacific/Gambier # GMT-9
 
   get_next_weekly_date3:
     uses: route06/actions/.github/workflows/calc_next_date.yml@remove-scheduled
     with:
       interval: weekly
-      target_day: thursday
+      target_day: wednesday
+      time_zone: Pacific/Gambier # GMT-9
 
   log_result:
     runs-on: ubuntu-latest
@@ -38,8 +42,8 @@ jobs:
       - name: Log the next scheduled date
         run: |
           cat <<EOF
-          It should be "2024/08/01". The actual value is ${{ needs.get_next_daily_date.outputs.next_date }}.
-          It should be "2024/08/06". The actual value is ${{ needs.get_next_weekly_date1.outputs.next_date }}.
-          It should be "2024/08/07". The actual value is ${{ needs.get_next_weekly_date2.outputs.next_date }}.
-          It should be "2024/08/01". The actual value is ${{ needs.get_next_weekly_date3.outputs.next_date }}.
+          It should be "2024/07/31". The actual value is ${{ needs.get_next_daily_date.outputs.next_date }}.
+          It should be "2024/08/05". The actual value is ${{ needs.get_next_weekly_date1.outputs.next_date }}.
+          It should be "2024/08/06". The actual value is ${{ needs.get_next_weekly_date2.outputs.next_date }}.
+          It should be "2024/07/31". The actual value is ${{ needs.get_next_weekly_date3.outputs.next_date }}.
           EOF
