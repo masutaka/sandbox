@@ -41,9 +41,6 @@ jobs:
     steps:
       - name: Log the next scheduled date
         run: |
-          echo "inputs.time_zone: ${{ inputs.time_zone }}"
-          echo "TZ: $TZ"
-          date
           cat <<EOF
           It should be "2024/07/31". The actual value is ${{ needs.get_next_daily_scheduled_date.outputs.next_scheduled_date }}.
           It should be "2024/08/05". The actual value is ${{ needs.get_next_weekly_scheduled_date1.outputs.next_scheduled_date }}.
