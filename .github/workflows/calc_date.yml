@@ -5,10 +5,10 @@ on:
 
 jobs:
   get_next_weekly_scheduled_date:
-    uses: route06/actions/.github/workflows/get_next_scheduled_date.yml@add-get-next-scheduled-date-workflow
+    uses: route06/actions/.github/workflows/get_next_scheduled_date.yml@feature
     with:
       interval: weekly
-      target_day: tuesday
+      target_day: wednesday
 
   log_result:
     runs-on: ubuntu-latest
