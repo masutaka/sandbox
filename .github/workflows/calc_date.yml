@@ -1,28 +1,28 @@
-name: Get next scheduled date
+name: Calc next date
 
 on:
   workflow_dispatch:
 
 jobs:
-  get_next_daily_scheduled_date:
-    uses: route06/actions/.github/workflows/get_next_scheduled_date.yml@feature
+  get_next_daily_date:
+    uses: route06/actions/.github/workflows/calc_next_date.yml@remove-scheduled
     with:
       interval: daily
 
-  get_next_weekly_scheduled_date1:
-    uses: route06/actions/.github/workflows/get_next_scheduled_date.yml@feature
+  get_next_weekly_date1:
+    uses: route06/actions/.github/workflows/calc_next_date.yml@remove-scheduled
     with:
       interval: weekly
       target_day: tuesday
 
-  get_next_weekly_scheduled_date2:
-    uses: route06/actions/.github/workflows/get_next_scheduled_date.yml@feature
+  get_next_weekly_date2:
+    uses: route06/actions/.github/workflows/calc_next_date.yml@remove-scheduled
     with:
       interval: weekly
       target_day: wednesday
 
-  get_next_weekly_scheduled_date3:
-    uses: route06/actions/.github/workflows/get_next_scheduled_date.yml@feature
+  get_next_weekly_date3:
+    uses: route06/actions/.github/workflows/calc_next_date.yml@remove-scheduled
     with:
       interval: weekly
       target_day: thursday
@@ -30,16 +30,16 @@ jobs:
   log_result:
     runs-on: ubuntu-latest
     needs:
-      - get_next_daily_scheduled_date
-      - get_next_weekly_scheduled_date1
-      - get_next_weekly_scheduled_date2
-      - get_next_weekly_scheduled_date3
+      - get_next_daily_date
+      - get_next_weekly_date1
+      - get_next_weekly_date2
+      - get_next_weekly_date3
     steps:
       - name: Log the next scheduled date
         run: |
           cat <<EOF
-          It should be "2024/08/01". The actual value is ${{ needs.get_next_daily_scheduled_date.outputs.next_scheduled_date }}.
-          It should be "2024/08/06". The actual value is ${{ needs.get_next_weekly_scheduled_date1.outputs.next_scheduled_date }}.
-          It should be "2024/08/07". The actual value is ${{ needs.get_next_weekly_scheduled_date2.outputs.next_scheduled_date }}.
-          It should be "2024/08/01". The actual value is ${{ needs.get_next_weekly_scheduled_date3.outputs.next_scheduled_date }}.
+          It should be "2024/08/01". The actual value is ${{ needs.get_next_daily_date.outputs.next_date }}.
+          It should be "2024/08/06". The actual value is ${{ needs.get_next_weekly_date1.outputs.next_date }}.
+          It should be "2024/08/07". The actual value is ${{ needs.get_next_weekly_date2.outputs.next_date }}.
+          It should be "2024/08/01". The actual value is ${{ needs.get_next_weekly_date3.outputs.next_date }}.
           EOF
