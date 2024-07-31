@@ -41,6 +41,7 @@ jobs:
     steps:
       - name: Log the next scheduled date
         run: |
+          echo "inputs.time_zone: ${{ inputs.time_zone }}"
           echo "TZ: $TZ"
           date
           cat <<EOF
