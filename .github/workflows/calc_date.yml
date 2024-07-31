@@ -5,27 +5,27 @@ on:
 
 jobs:
   get_next_daily_scheduled_date:
-    uses: route06/actions/.github/workflows/get_next_scheduled_date.yml@feature
+    uses: route06/actions/.github/workflows/get_next_scheduled_date.yml@tz-debug
     with:
       interval: daily
       time_zone: Pacific/Gambier # GMT-9
 
   get_next_weekly_scheduled_date1:
-    uses: route06/actions/.github/workflows/get_next_scheduled_date.yml@feature
+    uses: route06/actions/.github/workflows/get_next_scheduled_date.yml@tz-debug
     with:
       interval: weekly
       target_day: tuesday
       time_zone: Pacific/Gambier # GMT-9
 
   get_next_weekly_scheduled_date2:
-    uses: route06/actions/.github/workflows/get_next_scheduled_date.yml@feature
+    uses: route06/actions/.github/workflows/get_next_scheduled_date.yml@tz-debug
     with:
       interval: weekly
       target_day: wednesday
       time_zone: Pacific/Gambier # GMT-9
 
   get_next_weekly_scheduled_date3:
-    uses: route06/actions/.github/workflows/get_next_scheduled_date.yml@feature
+    uses: route06/actions/.github/workflows/get_next_scheduled_date.yml@tz-debug
     with:
       interval: weekly
       target_day: thursday
