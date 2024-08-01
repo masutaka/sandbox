@@ -1,15 +1,25 @@
 name: Create discussion
 
 on:
-  # schedule:
-  #   - cron: "0 0 * * mon"
+  schedule:
+    # 毎週水曜 13:00 JST に実行
+    - cron: "0 4 * * wed"
   workflow_dispatch:
 
 jobs:
-  create_discussion:
-    uses: route06/actions/.github/workflows/create_discussion.yml@baba-add-workflow
+  get_next_meeting_date:
+    uses: route06/actions/.github/workflows/calc_next_date.yml@feature
     with:
-      target_day: wednesday
-      title: 大事な話
-      discussion_category_slug: general
+      interval: weekly
+      target_day: wednesday # NOTE: MTG開催曜日に合わせて変更してください
+
+  create_discussion:
+    needs: get_next_meeting_date
+    uses: route06/actions/.github/workflows/create_gh_discussion.yml@feature
+    with:
+      # NOTE: 作成するDiscussionのタイトルを指定
+      title: ${{ needs.calc_next_weekly_date.outputs.next_date }} Meeting Title
+      # NOTE: discussion_category_slugについては補足参照
+      discussion_category_slug: meeting-notes
+      # NOTE: 作成するDiscussionで使用するテンプレートファイルのパスを指定
       description_template_path: .github/workflows/templates/important_discussion.yml
