@@ -11,7 +11,7 @@ jobs:
     uses: route06/actions/.github/workflows/calc_next_date.yml@feature
     with:
       interval: weekly
-      target_day: wednesday # NOTE: MTG開催曜日に合わせて変更してください
+      # target_day: wednesday # NOTE: MTG開催曜日に合わせて変更してください
 
   create_discussion:
     needs: get_next_meeting_date
