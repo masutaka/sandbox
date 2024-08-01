@@ -1,8 +1,0 @@
-name: Checking
-
-on:
-  workflow_dispatch:
-
-jobs:
-  checking:
-    uses: fmFA8AWrc2-internal/actions/.github/workflows/testing.yml@main
