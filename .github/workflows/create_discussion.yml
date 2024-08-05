@@ -8,14 +8,14 @@ on:
 
 jobs:
   get_next_meeting_date:
-    uses: route06/actions/.github/workflows/calc_next_date.yml@feature
+    uses: route06/actions/.github/workflows/calc_next_date.yml@update-workflow
     with:
       interval: weekly
       # target_day: wednesday # NOTE: MTG開催曜日に合わせて変更してください
 
   create_discussion:
     needs: get_next_meeting_date
-    uses: route06/actions/.github/workflows/create_gh_discussion.yml@refactor
+    uses: route06/actions/.github/workflows/create_gh_discussion.yml@update-workflow
     with:
       # NOTE: 作成するDiscussionのタイトルを指定
       title: ${{ needs.get_next_meeting_date.outputs.next_date }} 週 Hoge weekly meeting
@@ -23,3 +23,11 @@ jobs:
       category_slug: ideas
       # NOTE: 作成するDiscussionで使用するテンプレートファイルのパスを指定
       description_template_path: .github/workflows/templates/important_discussion.yml
+
+  debug:
+    needs: create_discussion
+    runs-on: ubuntu-latest
+    steps:
+      - name: debug log
+        run: |
+          echo "discussion_id: ${{ needs.create_discussion.outputs.discussion_id }}"
