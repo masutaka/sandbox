@@ -1,3 +1,3 @@
 # sandbox
 
-This is a masutaka sandbox repository.
+This is masutaka sandbox repository.
