@@ -47,7 +47,7 @@ jobs:
           echo "" >> $GITHUB_OUTPUT
           echo "* https://news.ycombinator.com/" >> $GITHUB_OUTPUT
           echo "" >> $GITHUB_OUTPUT
-          echo "    * See also Slack \`#news\`" >> $GITHUB_OUTPUT
+          echo "\ \ \ \ * See also Slack \`#news\`" >> $GITHUB_OUTPUT
           echo "" >> $GITHUB_OUTPUT
           echo "* https://www.reddit.com/r/opensource/" >> $GITHUB_OUTPUT
           echo "" >> $GITHUB_OUTPUT
