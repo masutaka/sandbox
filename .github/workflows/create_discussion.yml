@@ -59,7 +59,7 @@ jobs:
               }
             }
           variables: |
-            discussion_id: "${{ needs.create_weekly_meeting.outputs.discussion_id }}",
+            discussion_id: "${{ needs.create_weekly_meeting.outputs.discussion_id }}"
             body: "${{ toJSON(steps.get_comment_body.outputs.comment_body) }}"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
