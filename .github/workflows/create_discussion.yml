@@ -36,6 +36,9 @@ jobs:
     needs: create_discussion
     runs-on: ubuntu-latest
     timeout-minutes: 5
+    permissions:
+      contents: write
+      discussions: write
     steps:
       - id: get_comment_body
         run: |
