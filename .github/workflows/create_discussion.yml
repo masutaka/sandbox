@@ -43,18 +43,12 @@ jobs:
       - id: get_comment_body
         run: |
           echo "comment_body<<EOF" >> $GITHUB_OUTPUT
-          echo "## OSS News Checking" >> $GITHUB_OUTPUT
-          echo "" >> $GITHUB_OUTPUT
-          echo "* https://news.ycombinator.com/" >> $GITHUB_OUTPUT
-          echo "" >> $GITHUB_OUTPUT
-          echo "\ \ \ \ * See also Slack \`#news\`" >> $GITHUB_OUTPUT
-          echo "" >> $GITHUB_OUTPUT
-          echo "* https://www.reddit.com/r/opensource/" >> $GITHUB_OUTPUT
-          echo "" >> $GITHUB_OUTPUT
-          echo "* https://github.com/trending?since=weekly&spoken_language_code=" >> $GITHUB_OUTPUT
-          echo "" >> $GITHUB_OUTPUT
-          echo "* https://www.google.com/search?q=open+source" >> $GITHUB_OUTPUT
-          echo "" >> $GITHUB_OUTPUT
+          echo "## OSS News Checking\n" >> $GITHUB_OUTPUT
+          echo "* https://news.ycombinator.com/\n" >> $GITHUB_OUTPUT
+          echo "\ \ \ \ * See also Slack \`#news\`\n" >> $GITHUB_OUTPUT
+          echo "* https://www.reddit.com/r/opensource/\n" >> $GITHUB_OUTPUT
+          echo "* https://github.com/trending?since=weekly&spoken_language_code=\n" >> $GITHUB_OUTPUT
+          echo "* https://www.google.com/search?q=open+source\n" >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
       - name: Add discussion comment
         uses: octokit/graphql-action@v2.x
