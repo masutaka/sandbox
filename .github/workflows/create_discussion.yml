@@ -43,7 +43,7 @@ jobs:
       - id: get_comment_body
         run: |
           echo "comment_body<<EOF" >> $GITHUB_OUTPUT
-          echo "## OSS News Checking\n" >> $GITHUB_OUTPUT
+          echo "## 📰 OSS News Checking\n" >> $GITHUB_OUTPUT
           echo "* https://news.ycombinator.com/\n" >> $GITHUB_OUTPUT
           echo "\ \ \ \ * See also Slack \`#news\`\n" >> $GITHUB_OUTPUT
           echo "* https://www.reddit.com/r/opensource/\n" >> $GITHUB_OUTPUT
