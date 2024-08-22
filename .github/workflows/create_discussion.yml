@@ -62,9 +62,7 @@ jobs:
               }
             }
           variables: |
-            {
-              "discussion_id": "${{ needs.create_discussion.outputs.discussion_id }}",
-              "body": "${{ steps.get_comment_body.outputs.comment_body }}"
-            }
+            discussion_id: "${{ needs.create_discussion.outputs.discussion_id }}"
+            body: "${{ steps.get_comment_body.outputs.comment_body }}"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
