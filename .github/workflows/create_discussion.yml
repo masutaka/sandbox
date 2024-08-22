@@ -50,8 +50,6 @@ jobs:
       - name: Add discussion comment
         uses: octokit/graphql-action@v2.x
         with:
-          discussion_id: "${{ needs.create_weekly_meeting.outputs.discussion_id }}"
-          body: "${{ toJSON(steps.get_comment_body.outputs.comment_body) }}"
           query: |
             mutation($body:String!, $discussion_id:ID!) {
               addDiscussionComment(input: {discussionId: $discussion_id, body: $body}) {
@@ -60,5 +58,8 @@ jobs:
                 }
               }
             }
+          variables: |
+            discussion_id: "${{ needs.create_weekly_meeting.outputs.discussion_id }}",
+            body: "${{ toJSON(steps.get_comment_body.outputs.comment_body) }}"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
