@@ -34,6 +34,7 @@ jobs:
     env:
       DISCUSSION_ID: 'D_kwDOMR5Zws4AbV7e'
       COMMENT_TEMPLATE_PATH: '.github/workflows/templates/discussion_comment.md'
+      REPLY_TO_COMMENT_ID: 'DC_kwDOMR5Zws4Aoeyy'
     steps:
       # Replace "needs.create_discussion.outputs.discussion_id" to "env.DISCUSSION_ID"
       - uses: actions/checkout@v4
@@ -47,18 +48,19 @@ jobs:
         with:
           script: |
             const fs = require("fs");
-            const { DISCUSSION_ID, COMMENT_TEMPLATE_PATH } = process.env;
+            const { DISCUSSION_ID, COMMENT_TEMPLATE_PATH, REPLY_TO_COMMENT_ID } = process.env;
 
-            async function addDisussionComment(github, discussionId, body) {
-              const result = await github.graphql(`mutation($body:String!, $discussion_id:ID!) {
-                addDiscussionComment(input: {discussionId: $discussion_id, body: $body, replyToId: "DC_kwDOMR5Zws4Aoeyy"}) {
+            async function addDisussionComment(github, discussionId, body, replyToId) {
+              const result = await github.graphql(`mutation($body:String!, $discussion_id:ID!, $reply_to_id:ID) {
+                addDiscussionComment(input: {discussionId: $discussion_id, body: $body, replyToId: $reply_to_id}) {
                   comment {
                     id
                   }
                 }
               }`, {
-                body,
                 discussion_id: discussionId,
+                body: body,
+                reply_to_id: replyToId,
               });
 
               return result.addDiscussionComment.comment.id;
@@ -80,7 +82,7 @@ jobs:
               }
             })();
 
-            const comment_id = await addDisussionComment(github, DISCUSSION_ID, comment);
+            const comment_id = await addDisussionComment(github, DISCUSSION_ID, comment, REPLY_TO_COMMENT_ID);
 
             core.setOutput("discussion_id", DISCUSSION_ID);
             core.setOutput("comment_id", comment_id);
