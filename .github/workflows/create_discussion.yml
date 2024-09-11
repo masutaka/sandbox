@@ -13,28 +13,31 @@ jobs:
       interval: weekly
       # target_day: wednesday # NOTE: MTG開催曜日に合わせて変更してください
 
-  create_discussion:
-    needs: get_next_meeting_date
-    uses: route06/actions/.github/workflows/create_gh_discussion.yml@v2
-    with:
-      # NOTE: 作成するDiscussionのタイトルを指定
-      title: ${{ needs.get_next_meeting_date.outputs.next_date }} 週 Hoge weekly meeting
-      # NOTE: category_slugについては補足参照
-      category_slug: ideas
-      # NOTE: 作成するDiscussionで使用するテンプレートファイルのパスを指定
-      description_template_path: .github/workflows/templates/important_discussion.yml
+  # create_discussion:
+  #   needs: get_next_meeting_date
+  #   uses: route06/actions/.github/workflows/create_gh_discussion.yml@v2
+  #   with:
+  #     # NOTE: 作成するDiscussionのタイトルを指定
+  #     title: ${{ needs.get_next_meeting_date.outputs.next_date }} 週 Hoge weekly meeting
+  #     # NOTE: category_slugについては補足参照
+  #     category_slug: ideas
+  #     # NOTE: 作成するDiscussionで使用するテンプレートファイルのパスを指定
+  #     description_template_path: .github/workflows/templates/important_discussion.yml
 
   create_comment:
-    needs: create_discussion
+    # needs: create_discussion
     runs-on: ubuntu-latest
     timeout-minutes: 5
     permissions:
       contents: write
       discussions: write
+    env:
+      DISCUSSION_ID: 'D_kwDOMR5Zws4AbV7e'
     steps:
+      # Replace "needs.create_discussion.outputs.discussion_id" to "env.DISCUSSION_ID"
       - name: debug
         run: |
-          echo "discussion_id: ${{ needs.create_discussion.outputs.discussion_id }}"
+          echo "discussion_id: ${{ env.DISCUSSION_ID }}"
       - id: get_comment_body
         run: |
           echo "comment_body<<EOF" >> $GITHUB_OUTPUT
@@ -62,7 +65,7 @@ jobs:
               }
             }
           variables: |
-            discussion_id: "${{ needs.create_discussion.outputs.discussion_id }}"
+            discussion_id: "${{ env.DISCUSSION_ID }}"
             body: "${{ steps.get_comment_body.outputs.comment_body }}"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
