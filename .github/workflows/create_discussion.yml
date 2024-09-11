@@ -7,11 +7,11 @@ on:
   workflow_dispatch:
 
 jobs:
-  get_next_meeting_date:
-    uses: route06/actions/.github/workflows/calc_next_date.yml@v2
-    with:
-      interval: weekly
-      # target_day: wednesday # NOTE: MTG開催曜日に合わせて変更してください
+  # get_next_meeting_date:
+  #   uses: route06/actions/.github/workflows/calc_next_date.yml@v2
+  #   with:
+  #     interval: weekly
+  #     # target_day: wednesday # NOTE: MTG開催曜日に合わせて変更してください
 
   # create_discussion:
   #   needs: get_next_meeting_date
@@ -22,9 +22,9 @@ jobs:
   #     # NOTE: category_slugについては補足参照
   #     category_slug: ideas
   #     # NOTE: 作成するDiscussionで使用するテンプレートファイルのパスを指定
-  #     description_template_path: .github/workflows/templates/important_discussion.yml
+  #     description_template_path: .github/workflows/templates/important_discussion.md
 
-  create_comment:
+  post_comment:
     # needs: create_discussion
     runs-on: ubuntu-latest
     timeout-minutes: 5
@@ -33,39 +33,36 @@ jobs:
       discussions: write
     env:
       DISCUSSION_ID: 'D_kwDOMR5Zws4AbV7e'
+      COMMENT_TEMPLATE_PATH: '.github/workflows/templates/discussion_comment.md'
     steps:
       # Replace "needs.create_discussion.outputs.discussion_id" to "env.DISCUSSION_ID"
       - name: debug
         run: |
           echo "discussion_id: ${{ env.DISCUSSION_ID }}"
-      - id: get_comment_body
-        run: |
-          echo "comment_body<<EOF" >> $GITHUB_OUTPUT
-          echo "## 📰 OSS News Checking" >> $GITHUB_OUTPUT
-          echo "" >> $GITHUB_OUTPUT
-          echo "* https://news.ycombinator.com/" >> $GITHUB_OUTPUT
-          echo "" >> $GITHUB_OUTPUT
-          echo "\ \ \ \ * See also Slack \`#news\`" >> $GITHUB_OUTPUT
-          echo "" >> $GITHUB_OUTPUT
-          echo "* https://www.reddit.com/r/opensource/" >> $GITHUB_OUTPUT
-          echo "" >> $GITHUB_OUTPUT
-          echo "* https://github.com/trending?since=weekly&spoken_language_code=" >> $GITHUB_OUTPUT
-          echo "" >> $GITHUB_OUTPUT
-          echo "* https://www.google.com/search?q=open+source" >> $GITHUB_OUTPUT
-          echo "EOF" >> $GITHUB_OUTPUT
-      - name: Add discussion comment
-        uses: octokit/graphql-action@v2.x
+          echo "comment_template_path: ${{ env.COMMENT_TEMPLATE_PATH }}"
+      - name: Post Comment
+        id: post_comment
+        uses: actions/github-script@v7
         with:
-          query: |
-            mutation($body:String!, $discussion_id:ID!) {
-              addDiscussionComment(input: {discussionId: $discussion_id, body: $body}) {
-                comment {
-                  id
+          script: |
+            const fs = require("fs");
+
+            const { DISCUSSION_ID, COMMENT_TEMPLATE_PATH } = process.env;
+
+            const comment = (() => {
+              const DEFAULT_COMMENT = '<!-- Write comment here -->';
+              try {
+                const desc = fs.readFileSync(COMMENT_TEMPLATE_PATH, "utf8");
+                return desc.trim() === '' ? DEFAULT_COMMENT : desc;
+              } catch (error) {
+                if (error.code === 'ENOENT') {
+                  console.error("Error reading comment template file:", error);
+                  return DEFAULT_COMMENT;
+                }
+                else {
+                  throw error;
                 }
               }
-            }
-          variables: |
-            discussion_id: "${{ env.DISCUSSION_ID }}"
-            body: "${{ steps.get_comment_body.outputs.comment_body }}"
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+            })();
+
+            console.log(comment);
