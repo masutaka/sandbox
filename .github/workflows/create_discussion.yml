@@ -51,7 +51,7 @@ jobs:
 
             async function addDisussionComment(github, discussionId, body) {
               const result = await github.graphql(`mutation($body:String!, $discussion_id:ID!) {
-                addDiscussionComment(input: {discussionId: $discussion_id, body: $body, replyToId: "DC_kwDOMR5Zws4Aoeyy"}) {
+                addDiscussionComment(input: {discussionId: $discussion_id, body: $body, replyToId: null}) {
                   comment {
                     id
                   }
