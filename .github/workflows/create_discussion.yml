@@ -34,7 +34,7 @@ jobs:
     env:
       DISCUSSION_ID: 'D_kwDOMR5Zws4AbV7e'
       COMMENT_TEMPLATE_PATH: '.github/workflows/templates/discussion_comment.md'
-      REPLY_TO_COMMENT_ID: 'DC_kwDOMR5Zws4Aoeyy'
+      # REPLY_TO_COMMENT_ID: 'DC_kwDOMR5Zws4Aoeyy'
     steps:
       # Replace "needs.create_discussion.outputs.discussion_id" to "env.DISCUSSION_ID"
       - uses: actions/checkout@v4
