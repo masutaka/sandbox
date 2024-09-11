@@ -8,14 +8,14 @@ on:
 
 jobs:
   get_next_meeting_date:
-    uses: route06/actions/.github/workflows/calc_next_date.yml@v2
+    uses: route06/actions/.github/workflows/calc_next_date.yml@add-discussion-comment-workflow
     with:
       interval: weekly
       # target_day: wednesday # NOTE: MTG開催曜日に合わせて変更してください
 
   create_discussion:
     needs: get_next_meeting_date
-    uses: route06/actions/.github/workflows/create_gh_discussion.yml@v2
+    uses: route06/actions/.github/workflows/create_gh_discussion.yml@add-discussion-comment-workflow
     with:
       # NOTE: 作成するDiscussionのタイトルを指定
       title: ${{ needs.get_next_meeting_date.outputs.next_date }} 週 Hoge weekly meeting
@@ -26,75 +26,25 @@ jobs:
 
   add_comment:
     needs: create_discussion
-    runs-on: ubuntu-latest
-    timeout-minutes: 5
-    permissions:
-      contents: read
-      discussions: write
-    env:
-      DISCUSSION_ID: ${{ needs.create_discussion.outputs.discussion_id }}
-      COMMENT_TEMPLATE_PATH: '.github/workflows/templates/discussion_comment.md'
-    #    REPLY_TO_COMMENT_ID: 'DC_kwDOMR5Zws4Aoeyy'
-    steps:
-      - uses: actions/checkout@v4
-      - name: debug
-        run: |
-          echo "discussion_id: ${{ env.DISCUSSION_ID }}"
-          echo "comment_template_path: ${{ env.COMMENT_TEMPLATE_PATH }}"
-      - name: Add Comment
-        id: add_comment
-        uses: actions/github-script@v7
-        with:
-          script: |
-            const fs = require("fs");
-            const { DISCUSSION_ID, COMMENT_TEMPLATE_PATH, REPLY_TO_COMMENT_ID } = process.env;
+    uses: route06/actions/.github/workflows/add_discussion_comment.yml@add-discussion-comment-workflow
+    with:
+      discussion_id: ${{ needs.create_discussion.outputs.discussion_id }}
+      comment_template_path: .github/workflows/templates/discussion_comment1.md
 
-            async function addDisussionComment(github, discussionId, body, replyToId) {
-              const result = await github.graphql(`mutation($body:String!, $discussion_id:ID!, $reply_to_id:ID) {
-                addDiscussionComment(input: {discussionId: $discussion_id, body: $body, replyToId: $reply_to_id}) {
-                  comment {
-                    id
-                  }
-                }
-              }`, {
-                discussion_id: discussionId,
-                body: body,
-                reply_to_id: replyToId,
-              });
-
-              return result.addDiscussionComment.comment.id;
-            }
-
-            const comment = (() => {
-              const DEFAULT_COMMENT = '<!-- Write comment here -->';
-              try {
-                const desc = fs.readFileSync(COMMENT_TEMPLATE_PATH, "utf8");
-                return desc.trim() === '' ? DEFAULT_COMMENT : desc;
-              } catch (error) {
-                if (error.code === 'ENOENT') {
-                  console.error("Error reading comment template file:", error);
-                  return DEFAULT_COMMENT;
-                }
-                else {
-                  throw error;
-                }
-              }
-            })();
-
-            const comment_id = await addDisussionComment(github, DISCUSSION_ID, comment, REPLY_TO_COMMENT_ID);
-
-            core.setOutput("discussion_id", DISCUSSION_ID);
-            core.setOutput("comment_id", comment_id);
-    outputs:
-      discussion_id: ${{ steps.add_comment.outputs.discussion_id }}
-      comment_id: ${{ steps.add_comment.outputs.comment_id }}
+  reply_to_comment:
+    needs: add_comment
+    uses: route06/actions/.github/workflows/add_discussion_comment.yml@add-discussion-comment-workflow
+    with:
+      discussion_id: ${{ needs.add_comment.outputs.discussion_id }}
+      comment_template_path: .github/workflows/templates/discussion_comment2.md
+      reply_to_comment_id: ${{ needs.add_comment.outputs.comment_id }}
 
   debug:
-    needs: add_comment
+    needs: reply_to_comment
     runs-on: ubuntu-latest
     steps:
       - name: debug log
         run: |
-          echo "discussion_id: ${{ needs.add_comment.outputs.discussion_id }}"
-          echo "comment_id: ${{ needs.add_comment.outputs.comment_id }}"
+          echo "discussion_id: ${{ needs.reply_to_comment.outputs.discussion_id }}"
+          echo "comment_id: ${{ needs.reply_to_comment.outputs.comment_id }}"
 
