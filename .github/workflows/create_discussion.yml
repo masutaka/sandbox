@@ -27,6 +27,9 @@ jobs:
   add_comment:
     needs: create_discussion
     uses: route06/actions/.github/workflows/add_discussion_comment.yml@add-discussion-comment-workflow
+    permissions:
+      contents: read
+      discussions: write
     with:
       discussion_id: ${{ needs.create_discussion.outputs.discussion_id }}
       comment_template_path: .github/workflows/templates/discussion_comment1.md
@@ -34,6 +37,9 @@ jobs:
   reply_to_comment:
     needs: add_comment
     uses: route06/actions/.github/workflows/add_discussion_comment.yml@add-discussion-comment-workflow
+    permissions:
+      contents: read
+      discussions: write
     with:
       discussion_id: ${{ needs.add_comment.outputs.discussion_id }}
       comment_template_path: .github/workflows/templates/discussion_comment2.md
