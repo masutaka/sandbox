@@ -24,7 +24,7 @@ jobs:
   #     # NOTE: 作成するDiscussionで使用するテンプレートファイルのパスを指定
   #     description_template_path: .github/workflows/templates/important_discussion.md
 
-  post_comment:
+  add_comment:
     # needs: create_discussion
     runs-on: ubuntu-latest
     timeout-minutes: 5
@@ -42,14 +42,14 @@ jobs:
           echo "discussion_id: ${{ env.DISCUSSION_ID }}"
           echo "comment_template_path: ${{ env.COMMENT_TEMPLATE_PATH }}"
       - name: Post Comment
-        id: post_comment
+        id: add_comment
         uses: actions/github-script@v7
         with:
           script: |
             const fs = require("fs");
             const { DISCUSSION_ID, COMMENT_TEMPLATE_PATH } = process.env;
 
-            async function postDisussionComment(github, discussionId, body) {
+            async function addDisussionComment(github, discussionId, body) {
               const result = await github.graphql(`mutation($body:String!, $discussion_id:ID!) {
                 addDiscussionComment(input: {discussionId: $discussion_id, body: $body}) {
                   comment {
@@ -80,4 +80,20 @@ jobs:
               }
             })();
 
-            await postDisussionComment(github, DISCUSSION_ID, comment);
+            const comment_id = await addDisussionComment(github, DISCUSSION_ID, comment);
+
+            core.setOutput("discussion_id", DISCUSSION_ID);
+            core.setOutput("comment_id", comment_id);
+    outputs:
+      discussion_id: ${{ steps.add_comment.outputs.discussion_id }}
+      comment_id: ${{ steps.add_comment.outputs.comment_id }}
+
+  debug:
+    needs: add_comment
+    runs-on: ubuntu-latest
+    steps:
+      - name: debug log
+        run: |
+          echo "discussion_id: ${{ needs.add_comment.outputs.discussion_id }}"
+          echo "comment_id: ${{ needs.add_comment.outputs.comment_id }}"
+
