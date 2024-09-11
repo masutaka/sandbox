@@ -47,8 +47,22 @@ jobs:
         with:
           script: |
             const fs = require("fs");
-
             const { DISCUSSION_ID, COMMENT_TEMPLATE_PATH } = process.env;
+
+            async function postDisussionComment(github, discussionId, body) {
+              const result = await github.graphql(`mutation($body:String!, $discussion_id:ID!) {
+                addDiscussionComment(input: {discussionId: $discussion_id, body: $body}) {
+                  comment {
+                    id
+                  }
+                }
+              }`, {
+                body,
+                discussion_id: discussionId,
+              });
+
+              return result.addDiscussionComment.comment.id;
+            }
 
             const comment = (() => {
               const DEFAULT_COMMENT = '<!-- Write comment here -->';
@@ -66,4 +80,4 @@ jobs:
               }
             })();
 
-            console.log(comment);
+            await postDisussionComment(github, DISCUSSION_ID, comment);
