@@ -36,6 +36,7 @@ jobs:
       COMMENT_TEMPLATE_PATH: '.github/workflows/templates/discussion_comment.md'
     steps:
       # Replace "needs.create_discussion.outputs.discussion_id" to "env.DISCUSSION_ID"
+      - uses: actions/checkout@v4
       - name: debug
         run: |
           echo "discussion_id: ${{ env.DISCUSSION_ID }}"
