@@ -7,40 +7,40 @@ on:
   workflow_dispatch:
 
 jobs:
-  # get_next_meeting_date:
-  #   uses: route06/actions/.github/workflows/calc_next_date.yml@v2
-  #   with:
-  #     interval: weekly
-  #     # target_day: wednesday # NOTE: MTG開催曜日に合わせて変更してください
+  get_next_meeting_date:
+    uses: route06/actions/.github/workflows/calc_next_date.yml@v2
+    with:
+      interval: weekly
+      # target_day: wednesday # NOTE: MTG開催曜日に合わせて変更してください
 
-  # create_discussion:
-  #   needs: get_next_meeting_date
-  #   uses: route06/actions/.github/workflows/create_gh_discussion.yml@v2
-  #   with:
-  #     # NOTE: 作成するDiscussionのタイトルを指定
-  #     title: ${{ needs.get_next_meeting_date.outputs.next_date }} 週 Hoge weekly meeting
-  #     # NOTE: category_slugについては補足参照
-  #     category_slug: ideas
-  #     # NOTE: 作成するDiscussionで使用するテンプレートファイルのパスを指定
-  #     description_template_path: .github/workflows/templates/important_discussion.md
+  create_discussion:
+    needs: get_next_meeting_date
+    uses: route06/actions/.github/workflows/create_gh_discussion.yml@v2
+    with:
+      # NOTE: 作成するDiscussionのタイトルを指定
+      title: ${{ needs.get_next_meeting_date.outputs.next_date }} 週 Hoge weekly meeting
+      # NOTE: category_slugについては補足参照
+      category_slug: ideas
+      # NOTE: 作成するDiscussionで使用するテンプレートファイルのパスを指定
+      description_template_path: .github/workflows/templates/important_discussion.md
 
   add_comment:
-    # needs: create_discussion
+    needs: create_discussion
     runs-on: ubuntu-latest
     timeout-minutes: 5
     permissions:
       contents: read
       discussions: write
     env:
-      DISCUSSION_ID: 'D_kwDOMR5Zws4AbV7e'
+    #   DISCUSSION_ID: 'D_kwDOMR5Zws4AbV7e'
       COMMENT_TEMPLATE_PATH: '.github/workflows/templates/discussion_comment.md'
-      # REPLY_TO_COMMENT_ID: 'DC_kwDOMR5Zws4Aoeyy'
+    #   # REPLY_TO_COMMENT_ID: 'DC_kwDOMR5Zws4Aoeyy'
     steps:
       # Replace "needs.create_discussion.outputs.discussion_id" to "env.DISCUSSION_ID"
       - uses: actions/checkout@v4
       - name: debug
         run: |
-          echo "discussion_id: ${{ env.DISCUSSION_ID }}"
+          echo "discussion_id: ${{ needs.create_discussion.outputs.discussion_id }}"
           echo "comment_template_path: ${{ env.COMMENT_TEMPLATE_PATH }}"
       - name: Add Comment
         id: add_comment
