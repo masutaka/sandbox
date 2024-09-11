@@ -41,7 +41,7 @@ jobs:
         run: |
           echo "discussion_id: ${{ env.DISCUSSION_ID }}"
           echo "comment_template_path: ${{ env.COMMENT_TEMPLATE_PATH }}"
-      - name: Post Comment
+      - name: Add Comment
         id: add_comment
         uses: actions/github-script@v7
         with:
@@ -51,7 +51,7 @@ jobs:
 
             async function addDisussionComment(github, discussionId, body) {
               const result = await github.graphql(`mutation($body:String!, $discussion_id:ID!) {
-                addDiscussionComment(input: {discussionId: $discussion_id, body: $body}) {
+                addDiscussionComment(input: {discussionId: $discussion_id, body: $body, replyToId: 'DC_kwDOMR5Zws4Aoeyy'}) {
                   comment {
                     id
                   }
