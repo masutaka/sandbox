@@ -24,14 +24,6 @@ jobs:
       # NOTE: 作成するDiscussionで使用するテンプレートファイルのパスを指定
       description_template_path: .github/workflows/templates/important_discussion.yml
 
-  debug:
-    needs: create_discussion
-    runs-on: ubuntu-latest
-    steps:
-      - name: debug log
-        run: |
-          echo "discussion_id: ${{ needs.create_discussion.outputs.discussion_id }}"
-
   create_comment:
     needs: create_discussion
     runs-on: ubuntu-latest
@@ -40,6 +32,9 @@ jobs:
       contents: write
       discussions: write
     steps:
+      - name: debug
+        run: |
+          echo "discussion_id: ${{ needs.create_discussion.outputs.discussion_id }}"
       - id: get_comment_body
         run: |
           echo "comment_body<<EOF" >> $GITHUB_OUTPUT
