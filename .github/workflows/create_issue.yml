@@ -13,6 +13,7 @@ jobs:
       issues: write
     timeout-minutes: 5
     steps:
+      - uses: actions/checkout@v4
       - uses: JasonEtco/create-an-issue@v2
         id: create-issue
         env:
