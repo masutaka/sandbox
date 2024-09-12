@@ -7,20 +7,21 @@ on:
   workflow_dispatch:
 
 jobs:
-  get_date:
-    uses: route06/actions/.github/workflows/calc_next_date.yml@create-issue-workflow
-    with:
-      interval: weekly
-
   # get_date:
-  #   runs-on: ubuntu-latest
-  #   timeout-minutes: 5
-  #   steps:
-  #     - name: Get this month
-  #       run: |
-  #         echo "THIS_MONTH=$(date +%Y/%m)" >> "$GITHUB_OUTPUT"
-  #   outputs:
-  #     this_month: ${{ env.THIS_MONTH }}
+  #   uses: route06/actions/.github/workflows/calc_next_date.yml@create-issue-workflow
+  #   with:
+  #     interval: weekly
+
+  get_date:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Get this month
+        id: get_this_month
+        run: |
+          echo "this_month=$(date +%Y/%m)" >> "$GITHUB_OUTPUT"
+    outputs:
+      this_month: ${{ steps.get_this_month.outputs.this_month }}
 
   create_issue:
     needs: get_date
@@ -29,8 +30,8 @@ jobs:
       contents: read
       issues: write
     with:
-      title: ${{ needs.get_date.outputs.next_date }} Sample Issue
-      # title: ${{ needs.get_date.outputs.this_month }} Sample Issue
+      # title: ${{ needs.get_date.outputs.next_date }} Sample Issue
+      title: ${{ needs.get_date.outputs.this_month }} Sample Issue
       description_template_path: .github/workflows/templates/issue.md
       # assignees: masutaka
       # labels: bug, wontfix
