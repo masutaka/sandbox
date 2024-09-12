@@ -28,6 +28,14 @@ jobs:
           echo '---' > hoge.md
           echo 'title: "${{ env.TITLE }}"' >> hoge.md
 
+          #if [ -n "${{ env.ASSIGNEES}}" ]; then
+            echo 'assignees: "${{ env.ASSIGNEES}}"' >> hoge.md
+          #fi
+
+          #if [ -n "${{ env.LABELS}}" ]; then
+            echo 'labels: "${{ env.LABELS}}"' >> hoge.md
+          #fi
+
           echo '---' >> hoge.md
           echo  >> hoge.md
 
