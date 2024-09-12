@@ -43,7 +43,6 @@ jobs:
 
       - name: debug1
         run: |
-          ls -alF /tmp/
           cat hoge.md
 
       - uses: JasonEtco/create-an-issue@v2
