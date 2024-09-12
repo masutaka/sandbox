@@ -29,7 +29,7 @@ jobs:
       contents: read
       issues: write
     with:
-      title: ${{ needs.get_date.this_month }} Sample Issue
+      title: ${{ needs.get_date.outputs.this_month }} Sample Issue
       description_template_path: .github/workflows/templates/issue.md
       # assignees: masutaka
       # labels: bug, wontfix
