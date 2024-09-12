@@ -26,6 +26,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           TITLE: "${{ needs.get_date.outputs.next_date }} バグ報告"
+          LABELS: "bug, documentation"
         with:
           filename: .github/workflows/templates/issue.md
       - run: |
