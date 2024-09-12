@@ -1,7 +1,5 @@
 ---
 title: TITLE
-assignees: masutaka
-labels: bug
 ---
 
 ### 問題の概要
