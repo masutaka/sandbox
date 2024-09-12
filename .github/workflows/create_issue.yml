@@ -27,10 +27,10 @@ jobs:
       - uses: actions/checkout@v4
       - name: Decide template filename
         run: |
-          echo "WORK_TEMPLATE=hoge$$.md" >> $GITHUB_ENV
+          echo "TEMPLATE_WITH_HEADER=template_work$$.md" >> $GITHUB_ENV
       - name: Setup issue template
         run: |
-          cat <<EOF > ${{ env.WORK_TEMPLATE }}
+          cat <<EOF > ${{ env.TEMPLATE_WITH_HEADER }}
           ---
           title: "${{ env.TITLE }}"
           assignees: "${{ env.ASSIGNEES }}"
@@ -42,15 +42,15 @@ jobs:
 
       - name: debug1
         run: |
-          echo ${{ env.WORK_TEMPLATE }}
-          cat ${{ env.WORK_TEMPLATE }}
+          echo ${{ env.TEMPLATE_WITH_HEADER }}
+          cat ${{ env.TEMPLATE_WITH_HEADER }}
 
       - uses: JasonEtco/create-an-issue@v2
         id: create-issue
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          filename: ${{ env.WORK_TEMPLATE }}
+          filename: ${{ env.TEMPLATE_WITH_HEADER }}
       - name: debug2
         run: |
           echo Created ${{ steps.create-issue.outputs.url }}
