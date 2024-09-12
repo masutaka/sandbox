@@ -1,5 +1,7 @@
 ---
-title: ほげ
+title: {{ env.TITLE }}
+assignees: []
+labels: ["bug"]
 ---
 
 ### 問題の概要
