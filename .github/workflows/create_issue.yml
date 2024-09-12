@@ -7,50 +7,16 @@ on:
   workflow_dispatch:
 
 jobs:
-  get_date:
-    uses: route06/actions/.github/workflows/calc_next_date.yml@v2
-    with:
-      interval: weekly
+  # get_date:
+  #   uses: route06/actions/.github/workflows/calc_next_date.yml@create-issue-workflow
+  #   with:
+  #     interval: weekly
 
   create_issue:
-    needs: get_date
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      issues: write
-    timeout-minutes: 5
-    env:
-      TITLE: "${{ needs.get_date.outputs.next_date }} バグ報告4"
-      ASSIGNEES: "masutaka"
-      LABELS: "bug, wontfix"
-    steps:
-      - uses: actions/checkout@v4
-      - name: Decide template filename
-        run: |
-          echo "TEMPLATE_WITH_HEADER=template_work$$.md" >> $GITHUB_ENV
-      - name: Setup issue template
-        run: |
-          cat <<EOF > ${{ env.TEMPLATE_WITH_HEADER }}
-          ---
-          title: "${{ env.TITLE }}"
-          assignees: "${{ env.ASSIGNEES }}"
-          labels: "${{ env.LABELS }}"
-          ---
-
-          $(cat .github/workflows/templates/issue.md)
-          EOF
-
-      - name: debug1
-        run: |
-          echo ${{ env.TEMPLATE_WITH_HEADER }}
-          cat ${{ env.TEMPLATE_WITH_HEADER }}
-
-      - uses: JasonEtco/create-an-issue@v2
-        id: create-issue
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          filename: ${{ env.TEMPLATE_WITH_HEADER }}
-      - name: debug2
-        run: |
-          echo Created ${{ steps.create-issue.outputs.url }}
+    # needs: get_date
+    uses: route06/actions/.github/workflows/create_gh_issue.yml@create-issue-workflow
+    with:
+      title: Sample Issue
+      description_template_path: .github/workflows/templates/issue.md
+      # assignees: masutaka
+      # labels: bug, wontfix
