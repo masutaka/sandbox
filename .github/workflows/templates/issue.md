@@ -1,9 +1,3 @@
----
-title: "{{ env.TITLE }}"
-assignees: "{{ env.ASSIGNEES }}"
-labels: "{{ env.LABELS }}"
----
-
 ### 問題の概要
 バージョン 2.3.0 にアップデート後、ログインボタンが機能しなくなりました。
 

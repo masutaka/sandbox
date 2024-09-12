@@ -20,7 +20,7 @@ jobs:
       issues: write
     timeout-minutes: 5
     env:
-      TITLE: "${{ needs.get_date.outputs.next_date }} バグ報告2"
+      TITLE: "${{ needs.get_date.outputs.next_date }} バグ報告3"
     steps:
       - uses: actions/checkout@v4
       - name: Setup issue template
