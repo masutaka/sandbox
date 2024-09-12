@@ -12,14 +12,24 @@ jobs:
   #   with:
   #     interval: weekly
 
+  get_date:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Get this month
+        run: |
+          echo "THIS_MONTH=$(date +%Y/%m)" >> "$GITHUB_OUTPUT"
+    outputs:
+      this_month: ${{ env.THIS_MONTH }}
+
   create_issue:
-    # needs: get_date
+    needs: get_date
     uses: route06/actions/.github/workflows/create_gh_issue.yml@create-issue-workflow
     permissions:
       contents: read
       issues: write
     with:
-      title: Sample Issue
+      title: ${{ needs.get_date.this_month }} Sample Issue
       description_template_path: .github/workflows/templates/issue.md
       # assignees: masutaka
       # labels: bug, wontfix
