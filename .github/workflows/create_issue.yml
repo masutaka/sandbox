@@ -1,0 +1,24 @@
+name: Create issue
+
+on:
+  # schedule:
+  #   # 毎週水曜 13:00 JST に実行
+  #   - cron: "0 4 * * wed"
+  workflow_dispatch:
+
+jobs:
+  create_issue:
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+    timeout-minutes: 5
+    steps:
+      - uses: JasonEtco/create-an-issue@v2
+        id: create-issue
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          filename: .github/workflows/templates/issue.md
+      - run: |
+          echo Created issue number ${{ steps.create-issue.outputs.number }}
+          echo Created ${{ steps.create-issue.outputs.url }}
