@@ -20,16 +20,21 @@ jobs:
       issues: write
     timeout-minutes: 5
     env:
-      TITLE: "${{ needs.get_date.outputs.next_date }} バグ報告3"
+      TITLE: "${{ needs.get_date.outputs.next_date }} バグ報告4"
+      ASSIGNEES: "masutaka"
+      labels: "bug, wontfix"
     steps:
       - uses: actions/checkout@v4
+      - name: Decide template filename
+        run: |
+          echo "WORK_TEMPLATE=hoge$$.md" >> $GITHUB_ENV
       - name: Setup issue template
         run: |
-          cat <<EOF > hoge.md
+          cat <<EOF > ${{ env.WORK_TEMPLATE }}
           ---
           title: "${{ env.TITLE }}"
-          assignees: "${{ env.ASSIGNEES}}"
-          labels: "${{ env.LABELS}}"
+          assignees: "${{ env.ASSIGNEES }}"
+          labels: "${{ env.LABELS }}"
           ---
 
           $(cat .github/workflows/templates/issue.md)
@@ -37,14 +42,15 @@ jobs:
 
       - name: debug1
         run: |
-          cat hoge.md
+          echo ${{ env.WORK_TEMPLATE }}
+          cat ${{ env.WORK_TEMPLATE }}
 
       - uses: JasonEtco/create-an-issue@v2
         id: create-issue
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          filename: hoge.md
+          filename: ${{ env.WORK_TEMPLATE }}
       - name: debug2
         run: |
           echo Created ${{ steps.create-issue.outputs.url }}
