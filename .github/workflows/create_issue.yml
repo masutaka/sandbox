@@ -33,12 +33,17 @@ jobs:
 
           cat .github/workflows/templates/issue.md >> /tmp/hoge.md
 
+      - name: debug1
+        run: |
+          ls -alF /tmp/
+          cat /tmp/hoge.md
+
       - uses: JasonEtco/create-an-issue@v2
         id: create-issue
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           filename: /tmp/hoge.md
-      - name: debug
+      - name: debug2
         run: |
           echo Created ${{ steps.create-issue.outputs.url }}
