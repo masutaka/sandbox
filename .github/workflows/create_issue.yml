@@ -25,25 +25,25 @@ jobs:
       - uses: actions/checkout@v4
       - name: Setup issue template
         run: |
-          echo '---' > /tmp/hoge.md
-          echo 'title: "${{ env.TITLE }}"' >> /tmp/hoge.md
+          echo '---' > hoge.md
+          echo 'title: "${{ env.TITLE }}"' >> hoge.md
 
-          echo '---' >> /tmp/hoge.md
-          echo  >> /tmp/hoge.md
+          echo '---' >> hoge.md
+          echo  >> hoge.md
 
-          cat .github/workflows/templates/issue.md >> /tmp/hoge.md
+          cat .github/workflows/templates/issue.md >> hoge.md
 
       - name: debug1
         run: |
           ls -alF /tmp/
-          cat /tmp/hoge.md
+          cat hoge.md
 
       - uses: JasonEtco/create-an-issue@v2
         id: create-issue
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          filename: /tmp/hoge.md
+          filename: hoge.md
       - name: debug2
         run: |
           echo Created ${{ steps.create-issue.outputs.url }}
