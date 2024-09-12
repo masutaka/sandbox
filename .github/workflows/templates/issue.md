@@ -1,5 +1,5 @@
 ---
-title: {{ date | date('YYYY/MM') }} バグ報告
+title: {{ env.TITLE }}
 ---
 
 ### 問題の概要

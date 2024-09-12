@@ -7,7 +7,13 @@ on:
   workflow_dispatch:
 
 jobs:
+  get_date:
+    uses: route06/actions/.github/workflows/calc_next_date.yml@v2
+    with:
+      interval: weekly
+
   create_issue:
+    needs: get_date
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -19,6 +25,7 @@ jobs:
         id: create-issue
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TITLE: "${{ needs.get_date.outputs.next_date }} バグ報告"
         with:
           filename: .github/workflows/templates/issue.md
       - run: |
