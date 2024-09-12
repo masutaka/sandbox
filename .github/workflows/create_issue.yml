@@ -25,21 +25,15 @@ jobs:
       - uses: actions/checkout@v4
       - name: Setup issue template
         run: |
-          echo '---' > hoge.md
-          echo 'title: "${{ env.TITLE }}"' >> hoge.md
+          cat <<EOF > hoge.md
+          ---
+          title: "${{ env.TITLE }}"
+          assignees: "${{ env.ASSIGNEES}}"
+          labels: "${{ env.LABELS}}"
+          ---
 
-          #if [ -n "${{ env.ASSIGNEES}}" ]; then
-            echo 'assignees: "${{ env.ASSIGNEES}}"' >> hoge.md
-          #fi
-
-          #if [ -n "${{ env.LABELS}}" ]; then
-            echo 'labels: "${{ env.LABELS}}"' >> hoge.md
-          #fi
-
-          echo '---' >> hoge.md
-          echo  >> hoge.md
-
-          cat .github/workflows/templates/issue.md >> hoge.md
+          $(cat .github/workflows/templates/issue.md)
+          EOF
 
       - name: debug1
         run: |
