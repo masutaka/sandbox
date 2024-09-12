@@ -1,6 +1,6 @@
 ---
-title: {{ env.TITLE }}
-assignees:
+title: TITLE
+assignees: masutaka
 labels: bug
 ---
 
