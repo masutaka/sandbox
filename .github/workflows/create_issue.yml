@@ -15,6 +15,9 @@ jobs:
   create_issue:
     # needs: get_date
     uses: route06/actions/.github/workflows/create_gh_issue.yml@create-issue-workflow
+    permissions:
+      contents: read
+      issues: write
     with:
       title: Sample Issue
       description_template_path: .github/workflows/templates/issue.md
