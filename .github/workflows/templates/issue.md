@@ -1,7 +1,7 @@
 ---
 title: {{ env.TITLE }}
-assignees: []
-labels: ["bug"]
+assignees:
+labels: bug
 ---
 
 ### 問題の概要
