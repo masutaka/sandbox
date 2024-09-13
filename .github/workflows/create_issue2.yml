@@ -1,0 +1,44 @@
+# NOTE: 適当な workflow 名にして下さい。Actions タブ左側に表示されます。
+# 例: https://github.com/route06/general/actions
+name: Create a sample issue
+
+on:
+  workflow_dispatch:
+  schedule:
+    # NOTE: Issueを作成するタイミングに合わせて修正してください。
+    # 例:
+    # 毎週水曜13:00に作成する → cron: "0 4 * * wed"
+    # 毎週月曜8:00に作成する → cron: "0 23 * * sun"
+    # ref: https://docs.github.com/ja/actions/writing-workflows/choosing-when-your-workflow-runs/events-that-trigger-workflows#schedule
+    - cron: "0 4 * * wed"
+
+jobs:
+  get_date:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Get today
+        id: get_today
+        # NOTE: この例では今日の日付が Issue タイトルに使われます。例: 2024/09/13
+        run: |
+          echo "today=$(date +%Y/%m/%d)" >> "$GITHUB_OUTPUT"
+    outputs:
+      today: ${{ steps.get_today.outputs.today }}
+
+  create_issue:
+    needs: get_date
+    uses: route06/actions/.github/workflows/create_gh_issue.yml@v2
+    permissions:
+      contents: read
+      issues: write
+    with:
+      # NOTE: タイトルを修正してください。以下は、「yyyy/mm/dd Sample TODO」となります。
+      title: ${{ needs.get_date.outputs.today }} Sample TODO
+      # NOTE: 本文に利用するテンプレートファイルを作成し、パスを指定してください。
+      # 以下は、リポジトリに "_templates/sample_todo.md" というファイルがある想定です。
+      # ファイルが見つからない場合、本文が空の Issue が作成されます。
+      description_template_path: _templates/sample_todo.md
+      # NOTE: [任意] アサインしたい人を設定して下さい。不要ならこの行自体を削除して下さい。
+      assignees: masutaka
+      # NOTE: [任意] ラベルを設定して下さい。不要ならこの行自体を削除して下さい。
+      labels: bug, wontfix
