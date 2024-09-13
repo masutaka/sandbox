@@ -41,4 +41,4 @@ jobs:
       # NOTE: [任意] アサインしたい人を設定して下さい。不要ならこの行自体を削除して下さい。
       assignees: masutaka
       # NOTE: [任意] ラベルを設定して下さい。不要ならこの行自体を削除して下さい。
-      labels: bug, wontfix
+      labels: bug,wontfix
