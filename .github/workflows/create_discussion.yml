@@ -8,7 +8,7 @@ on:
 
 jobs:
   get_next_meeting_date:
-    uses: route06/actions/.github/workflows/calc_next_date.yml@add-discussion-comment-workflow
+    uses: route06/actions/.github/workflows/calc_next_date.yml@v2
     with:
       interval: weekly
       # target_day: wednesday # NOTE: MTG開催曜日に合わせて変更してください
