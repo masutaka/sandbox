@@ -36,9 +36,9 @@ jobs:
       matrix:
         template:
           [
-            ".github/workflows/templates/discussion_comment1.md",
-            ".github/workflows/templates/discussion_comment2.md",
+            "discussion_comment1.md",
+            "discussion_comment2.md",
           ]
     with:
       discussion_id: ${{ needs.create_discussion.outputs.discussion_id }}
-      comment_template_path: ${{ matrix.template }}
+      comment_template_path: .github/workflows/templates/${{ matrix.template }}
