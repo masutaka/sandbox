@@ -24,33 +24,21 @@ jobs:
       # NOTE: 作成するDiscussionで使用するテンプレートファイルのパスを指定
       description_template_path: .github/workflows/templates/important_discussion.md
 
-  add_comment:
+  add_comments:
     needs: create_discussion
     uses: route06/actions/.github/workflows/add_discussion_comment.yml@add-discussion-comment-workflow
     permissions:
       contents: read
       discussions: write
+    strategy:
+      fail-fast: true
+      max-parallel: 1
+      matrix:
+        template:
+          [
+            ".github/workflows/templates/discussion_comment1.md",
+            ".github/workflows/templates/discussion_comment2.md",
+          ]
     with:
       discussion_id: ${{ needs.create_discussion.outputs.discussion_id }}
-      comment_template_path: .github/workflows/templates/discussion_comment1.md
-
-  reply_to_comment:
-    needs: add_comment
-    uses: route06/actions/.github/workflows/add_discussion_comment.yml@add-discussion-comment-workflow
-    permissions:
-      contents: read
-      discussions: write
-    with:
-      discussion_id: ${{ needs.add_comment.outputs.discussion_id }}
-      comment_template_path: .github/workflows/templates/discussion_comment2.md
-      reply_to_comment_id: ${{ needs.add_comment.outputs.comment_id }}
-
-  debug:
-    needs: reply_to_comment
-    runs-on: ubuntu-latest
-    steps:
-      - name: debug log
-        run: |
-          echo "discussion_id: ${{ needs.reply_to_comment.outputs.discussion_id }}"
-          echo "comment_id: ${{ needs.reply_to_comment.outputs.comment_id }}"
-
+      comment_template_path: ${{ matrix.template }}
