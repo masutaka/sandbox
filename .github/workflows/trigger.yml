@@ -4,10 +4,11 @@ on:
   push:
     branches:
       - main
-    paths: &paths
+    paths:
       - hoge.txt
   pull_request:
-    paths: *paths
+    paths:
+      - hoge.txt
 
 jobs:
   trigger_test:
