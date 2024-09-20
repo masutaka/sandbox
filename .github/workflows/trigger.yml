@@ -4,13 +4,7 @@ on:
   push:
     branches:
       - main
-    paths:
-      - .github/workflows/trigger.yml
-      - hoge.txt
   pull_request:
-    paths:
-      - .github/workflows/trigger.yml
-      - hoge.txt
 
 jobs:
   trigger_test:
@@ -18,4 +12,13 @@ jobs:
     timeout-minutes: 5
     steps:
       - uses: actions/checkout@v4
-      - run: echo 'triggered!'
+      - uses: dorny/paths-filter@v3
+        id: changes
+        with:
+          filters: |
+            target:
+              - .github/workflows/trigger.yml
+              - hoge.txt
+      - name: trigger
+        if: steps.changes.outputs.target == 'true'
+        run: echo 'triggered!'
