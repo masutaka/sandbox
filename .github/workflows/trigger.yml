@@ -1,0 +1,19 @@
+name: Trigger Test
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - hoge.txt
+  pull_request:
+    paths:
+      - hoge.txt
+
+jobs:
+  trigger_test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - run: echo 'triggered!'
