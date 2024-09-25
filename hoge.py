@@ -1,1 +1,1 @@
-print("hogehoge")
+print("hoge")
