@@ -11,4 +11,4 @@ permissions:
 
 jobs:
   codeql:
-    uses: route06/actions/.github/workflows/codeql.yml@dynamic-codeql-jobs
+    uses: route06/actions/.github/workflows/codeql.yml@dynamic-codeql-jobs-test
