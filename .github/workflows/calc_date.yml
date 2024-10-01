@@ -5,27 +5,27 @@ on:
 
 jobs:
   get_next_daily_date:
-    uses: route06/actions/.github/workflows/calc_next_date.yml@remove-scheduled
+    uses: route06/actions/.github/workflows/calc_next_date.yml@v2
     with:
       interval: daily
       time_zone: Pacific/Gambier # GMT-9
 
   get_next_weekly_date1:
-    uses: route06/actions/.github/workflows/calc_next_date.yml@remove-scheduled
+    uses: route06/actions/.github/workflows/calc_next_date.yml@v2
     with:
       interval: weekly
       target_day: monday
       time_zone: Pacific/Gambier # GMT-9
 
   get_next_weekly_date2:
-    uses: route06/actions/.github/workflows/calc_next_date.yml@remove-scheduled
+    uses: route06/actions/.github/workflows/calc_next_date.yml@v2
     with:
       interval: weekly
       target_day: tuesday
       time_zone: Pacific/Gambier # GMT-9
 
   get_next_weekly_date3:
-    uses: route06/actions/.github/workflows/calc_next_date.yml@remove-scheduled
+    uses: route06/actions/.github/workflows/calc_next_date.yml@v2
     with:
       interval: weekly
       target_day: wednesday

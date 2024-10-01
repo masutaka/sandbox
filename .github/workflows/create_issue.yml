@@ -8,7 +8,7 @@ on:
 
 jobs:
   # get_date:
-  #   uses: route06/actions/.github/workflows/calc_next_date.yml@refactor-create-gh-issue-workflow
+  #   uses: route06/actions/.github/workflows/calc_next_date.yml@v2
   #   with:
   #     interval: weekly
 
@@ -25,7 +25,7 @@ jobs:
 
   create_issue:
     needs: get_date
-    uses: route06/actions/.github/workflows/create_gh_issue.yml@refactor-create-gh-issue-workflow
+    uses: route06/actions/.github/workflows/create_gh_issue.yml@v2
     permissions:
       contents: read
       issues: write
