@@ -29,7 +29,8 @@ class Stopwatch
 
   def elapsed_time
     return 0 unless @start_time
-    (@end_time || Time.now) - @start_time
+    elapsed = (@end_time || Time.now) - @start_time
+    elapsed.negative? ? 0 : elapsed
   end
 
   def running?
