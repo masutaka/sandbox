@@ -14,7 +14,7 @@ class PasswordGenerator
   def generate
     return "Error: No character set selected!" if @char_pool.empty?
 
-    Array.new(@length) { @char_pool.sample }.join
+    Array.new(@length) { @char_pool[SecureRandom.rand(@char_pool.length)] }.join
   end
 
   private
