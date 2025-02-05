@@ -1,3 +1,5 @@
+#!/usr/bin/env ruby
+
 require 'json'
 
 TODO_FILE = 'todo_list.json'
