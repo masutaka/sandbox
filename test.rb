@@ -1,27 +1,32 @@
 #!/usr/bin/env ruby
 
-require 'fileutils'
+require 'pathname'
 
-# List files in the specified directory and categorize them by extension
+# Categorize files in the given directory by their extensions
 def categorize_files(directory)
   return puts "Directory does not exist: #{directory}" unless Dir.exist?(directory)
 
-  file_categories = Hash.new { |hash, key| hash[key] = [] }
+  Pathname(directory).children.each_with_object(Hash.new { |h, k| h[k] = [] }) do |file, categories|
+    next if file.directory?
 
-  Dir.foreach(directory) do |file|
-    next if File.directory?(file) # Skip directories
-    ext = File.extname(file).downcase
+    ext = file.extname.downcase
     ext = 'none' if ext.empty?
-    file_categories[ext] << file
+    categories[ext] << file.basename.to_s
   end
+end
+
+# Display categorized files
+def display_categories(directory)
+  categories = categorize_files(directory)
+  return unless categories
 
   puts "Files in directory '#{directory}':"
-  file_categories.each do |ext, files|
+  categories.each do |ext, files|
     puts "[#{ext}]"
     files.each { |file| puts "  - #{file}" }
   end
 end
 
 # Execution
-directory_path = ARGV[0] || '.' # Use the current directory if no argument is provided
-categorize_files(directory_path)
+directory_path = ARGV[0] || '.'
+display_categories(directory_path)
